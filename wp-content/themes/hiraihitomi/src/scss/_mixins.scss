@@ -1,0 +1,247 @@
+/*
+Index of utilities:
+1. Breakpoints responsive
+2. Triangles
+3. Border Radius
+4. Animation
+5. Gradients
+6. Responsive height/width ratio 
+7. Box shadow
+8. Prefixes
+9. Rows
+*/
+
+/*********************
+1. BREAKPOINTS (media queries for respond below)
+*********************/
+@mixin mediaquery($breakpoint) {
+
+  // If the breakpoint exists in the map.
+  @if map-has-key($breakpoints, $breakpoint) {
+
+    // Get the breakpoint value.
+    $breakpoint-value: map-get($breakpoints, $breakpoint);
+
+    // Write the media query.
+    @media (min-width: ($breakpoint-value + 1)) {
+      @content;
+    }
+
+  // If the breakpoint doesn't exist in the map.
+  } @else {
+
+    // Log a warning.
+    @warn 'Invalid breakpoint: #{$breakpoint}.';
+  }
+}
+
+
+
+
+/*********************
+2. Triangles
+*********************/
+@mixin css-triangle($color, $direction, $size: 6px, $position: absolute, $round: false){
+   @include pseudo($pos: $position);
+   width: 0;
+   height: 0;
+   @if $round {
+       border-radius: 3px;
+   }
+   @if $direction == down {
+       border-left: $size solid transparent;
+       border-right: $size solid transparent;
+       border-top: $size solid $color;
+       margin-top: 0 - round( $size / 2.5 );
+   } @else if $direction == up {
+       border-left: $size solid transparent;
+       border-right: $size solid transparent;
+       border-bottom: $size solid $color;
+       margin-bottom: 0 - round( $size / 2.5 );
+   } @else if $direction == right {
+       border-top: $size solid transparent;
+       border-bottom: $size solid transparent;
+       border-left: $size solid $color;
+       margin-right: -$size;
+   } @else if  $direction == left {
+       border-top: $size solid transparent;
+       border-bottom: $size solid transparent;
+       border-right: $size solid $color;
+       margin-left: -$size;
+   }
+}
+
+//Pseudo
+@mixin pseudo($display: block, $pos: absolute, $content: ''){
+  content: $content;
+  display: $display;
+  position: $pos;
+}
+/*********************
+3. Border radius
+*********************/
+ @mixin border-radius($top-left:10px, $top-right:null, $bottom-right:null, $bottom-left:null){
+  @each $prefix in $prefixes {
+    #{$prefix}border-radius: $top-left $top-right $bottom-right $bottom-left;  
+  }
+}
+
+
+/*********************
+4. Animation
+*********************/
+@mixin keyframes($animation-name) {
+   @-webkit-keyframes #{$animation-name} {
+       @content;
+   }
+   @-moz-keyframes #{$animation-name} {
+       @content;
+   }  
+   @-ms-keyframes #{$animation-name} {
+       @content;
+   }
+   @-o-keyframes #{$animation-name} {
+       @content;
+   }  
+   @keyframes #{$animation-name} {
+       @content;
+   }
+}
+@mixin animation($str) {
+ -webkit-animation: #{$str};
+ -moz-animation: #{$str};
+ -ms-animation: #{$str};
+ -o-animation: #{$str};
+ animation: #{$str};      
+}
+//Usage example
+// Step 1: Define animation name, and properties
+/*@include keyframes(fade-out) {
+ 0% { opacity: 1; }
+ 90% { opacity: 0; }
+}*/
+// Step 2: Add animation to element
+/* .element {
+ width: 100px;
+ height: 100px;
+ background: black;
+ @include animation('fade-out 5s 3');
+}
+*/
+
+
+/*********************
+5. Gradients
+*********************/
+@mixin background-gradient($start-color, $end-color, $orientation) { 
+   background: $start-color;
+
+   @if $orientation == 'vertical' {
+     background: -webkit-linear-gradient(top, $start-color, $end-color);
+     background: linear-gradient(to bottom, $start-color, $end-color);
+   } @else if $orientation == 'horizontal' {
+     background: -webkit-linear-gradient(left, $start-color, $end-color);
+     background: linear-gradient(to right, $start-color, $end-color);
+   } @else {
+     background: -webkit-radial-gradient(center, ellipse cover, $start-color, $end-color);
+     background: radial-gradient(ellipse at center, $start-color, $end-color);
+   }
+}
+ //Usage:
+ //$start-color, $end-color, $orientation - (vertical/horizontal/radial)
+ /*.foo {
+   @include background-gradient(red, black, 'vertical');
+ }*/
+
+
+
+
+
+
+/*********************
+6. Responsive height/width ratio 
+*********************/
+@mixin responsive-ratio($x,$y, $pseudo: false) {
+   $padding: unquote( ( $y / $x ) * 100 + '%' );
+   @if $pseudo {
+       &:before {
+           @include pseudo($pos: relative);
+           width: 100%;
+           padding-top: $padding;
+       }
+   } @else {
+       padding-top: $padding;
+   }
+}
+/*Usage example for videos    
+@include responsive-ratio(16,9) */
+
+
+
+
+@mixin placeholder {
+  $placeholders: ":-webkit-input" ":-moz" "-moz" "-ms-input";
+  @each $placeholder in $placeholders {
+    &:#{$placeholder}-placeholder {
+      @content;
+    }
+  }
+}
+
+
+
+/*********************
+7. Box shadow
+*********************/
+@mixin box-shadow($top, $left, $blur, $color, $inset: false) {
+  @if $inset {
+    -webkit-box-shadow:inset $top $left $blur $color;
+    -moz-box-shadow:inset $top $left $blur $color;
+    box-shadow:inset $top $left $blur $color;
+  } @else {
+    -webkit-box-shadow: $top $left $blur $color;
+    -moz-box-shadow: $top $left $blur $color;
+    box-shadow: $top $left $blur $color;
+  }
+}
+
+/*********************
+8. Prefixes
+*********************/
+/// Mixin to prefix a property
+
+@mixin prefix($property, $value, $prefixes: ()) {
+  @each $prefix in $prefixes {
+    #{'-' + $prefix + '-' + $property}: $value;
+  }
+ 
+  // Output standard non-prefixed declaration
+  #{$property}: $value;
+}
+
+/* usage example @include prefix(transform, rotate(45deg), webkit ms); */
+
+@mixin pills($bgcolor: $pink, $color: #fff){
+  display: inline-block;
+  color: $color;
+  background-color: $bgcolor;
+  padding: 5px 10px;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+
+/*********************
+9. ROWS
+*********************/
+/// Mixin to calculate rows 
+@mixin rowCalc($numPerRow, $margin) {
+  width: ((100% - (($numPerRow - 1) * $margin)) / $numPerRow);
+  &:nth-child(n) {
+    margin-bottom: $margin;
+    margin-right: $margin;
+  }
+  &:nth-child(#{$numPerRow}) {
+    margin-right: 0;
+    //margin-bottom: 0;
+  }
+}

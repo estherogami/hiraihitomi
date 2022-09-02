@@ -1,0 +1,87 @@
+/*
+Index of utilities:
+1. Breakpoints responsive
+2. Triangles
+3. Border Radius
+4. Animation
+5. Gradients
+6. Responsive height/width ratio 
+7. Box shadow
+8. Prefixes
+9. Rows
+*/
+/*********************
+1. BREAKPOINTS (media queries for respond below)
+*********************/
+/*********************
+2. Triangles
+*********************/
+/*********************
+3. Border radius
+*********************/
+/*********************
+4. Animation
+*********************/
+/*@include keyframes(fade-out) {
+ 0% { opacity: 1; }
+ 90% { opacity: 0; }
+}*/
+/* .element {
+ width: 100px;
+ height: 100px;
+ background: black;
+ @include animation('fade-out 5s 3');
+}
+*/
+/*********************
+5. Gradients
+*********************/
+/*.foo {
+  @include background-gradient(red, black, 'vertical');
+}*/
+/*********************
+6. Responsive height/width ratio 
+*********************/
+/*Usage example for videos    
+@include responsive-ratio(16,9) */
+/*********************
+7. Box shadow
+*********************/
+/*********************
+8. Prefixes
+*********************/
+/* usage example @include prefix(transform, rotate(45deg), webkit ms); */
+/*********************
+9. ROWS
+*********************/
+/*********************
+External fonts
+*********************/
+/*********************
+Font styles
+*********************/
+/*********************
+Define default font size
+*********************/
+/*Also has a fallback for >IE8 */
+/*
+Usage example:
+p { @include font-size(14px) }
+*/
+html {
+  box-sizing: border-box;
+  font-size: 100%;
+  scroll-behavior: smooth;
+  background: transparent;
+  overflow-x: hidden !important;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+a:hover, a {
+  text-decoration: none !important;
+}
+
+/*# sourceMappingURL=bundle.css.map */

@@ -1,0 +1,64 @@
+//Google fonts
+//@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap');
+
+//Font awesome
+//@import "../../node_modules/@fortawesome/fontawesome-free/scss/fontawesome";
+//@import "../../node_modules/@fortawesome/fontawesome-free/scss/brands";
+//@import "../../node_modules/@fortawesome/fontawesome-free/scss/regular";
+//@import "../../node_modules/@fortawesome/fontawesome-free/scss/solid";
+//@import "../../node_modules/@fortawesome/fontawesome-free/scss/v4-shims";
+
+
+
+/*********************
+External fonts
+*********************/
+@mixin font-face($font-name, $file-name, $weight: normal, $style: normal) { 
+  @font-face {
+    font-family: quote($font-name);
+    src: url($file-name + '.eot');
+    src: url($file-name + '.eot?#iefix')  format('embedded-opentype'),
+         url($file-name + '.woff') format('woff'),
+         url($file-name + '.ttf')  format('truetype'),
+         url($file-name + '.svg##{$font-name}')  format('svg');
+    font-weight: $weight;
+    font-style: $style;
+  }
+ }
+ //Usage example
+// @include font-face('gotham', '/fonts/gotham');
+
+
+
+
+/*********************
+Font styles
+*********************/
+@mixin font-style($size: false, $colour: false, $weight: false,  $lh: false) {
+    /*font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif;*/
+    @if $size { @include font-size($size) }
+    @if $colour { color: $colour; }
+    @if $weight { font-weight: $weight; }
+    @if $lh { line-height: $lh; }
+}
+//Size calls the next mixins
+
+
+
+/*********************
+Define default font size
+*********************/
+/*Also has a fallback for >IE8 */
+@function calculateRem($size) {
+  $remSize: $size / 16px;
+  @return $remSize * 1rem;
+}
+  
+@mixin font-size($size) {
+  font-size: $size; 
+  font-size: calculateRem($size);
+}
+ /*
+ Usage example:
+ p { @include font-size(14px) }
+ */

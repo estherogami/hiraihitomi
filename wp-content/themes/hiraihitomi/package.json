@@ -1,0 +1,17 @@
+{
+  "dependencies": {
+    "sass": "^1.54.8"
+  },
+  "name": "hiraihitomi",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "sass-dev": "sass --watch --update --style=expanded src/scss:dist/css",
+    "sass-prod": "sass --no-source-map --style=compressed src/scss:dist/css"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
